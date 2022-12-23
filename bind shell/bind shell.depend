@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1671401765 source:/home/kali/Desktop/bind shell/main.cpp
+	<iostream>
+	<sys/socket.h>
+	<arpa/inet.h>
+	<string>
+	<string.h>
+	<unistd.h>
+
